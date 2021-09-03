@@ -1,7 +1,8 @@
-import '/ui/pages/get_started.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '/ui/pages/mainpage.dart';
+import '/ui/pages/get_started.dart';
 import 'ui/pages/sign_up_page.dart';
 import 'ui/pages/splash_page.dart';
 void main() {
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/' : (ctx) => SplashPage(),
         '/get-started' : (ctx) => GetStartedPage(),
-        '/sign-up' : (ctx) => SignUp()
+        '/sign-up' : (ctx) => SignUp(),
+        '/mainpage' : (ctx) => MainPage()
       },
     );
   }

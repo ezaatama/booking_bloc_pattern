@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "618470717619",
+    "project_id": "airplane-1853b",
+    "storage_bucket": "airplane-1853b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:618470717619:android:1cc726e816e1b7211818c6",
+        "android_client_info": {
+          "package_name": "com.ezaatama.bwa_airplane"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "618470717619-dim3l3g37hnt910h7iao58iu715jv5lg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiPu6Rfyra22e_K9_cKfeGquGq6TayWqM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "618470717619-dim3l3g37hnt910h7iao58iu715jv5lg.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "618470717619-44br5235dc21kf80v0lpfb233rocuvqg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.ezaatama.airplane",
+                "app_store_id": "123456789"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

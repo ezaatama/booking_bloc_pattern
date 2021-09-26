@@ -1,3 +1,6 @@
+import 'package:bwa_airplane/cubit/auth/auth_cubit.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import '/ui/widgets/destination_tile.dart';
 
 import '/ui/widgets/destinations_card.dart';
@@ -15,43 +18,51 @@ class HomePage extends StatelessWidget {
   }
 
   Widget header() {
-    return Container(
-      margin:
-          EdgeInsets.only(left: defaultMargin, right: defaultMargin, top: 30),
-      child: Row(
-        children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) {
+        if (state is AuthSuccess) {
+          return Container(
+            margin: EdgeInsets.only(
+                left: defaultMargin, right: defaultMargin, top: 30),
+            child: Row(
               children: [
-                Text(
-                  'Hallo,\nReza Putra Pratama',
-                  style: blackTextStyle.copyWith(
-                      fontSize: 24, fontWeight: semiBold),
-                  // overflow: TextOverflow.ellipsis, > Digunakan untuk memotong teks yang terlalu panjang dalam satu baris
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Hallo,\n${state.user.name}',
+                        style: blackTextStyle.copyWith(
+                            fontSize: 24, fontWeight: semiBold),
+                        // overflow: TextOverflow.ellipsis, > Digunakan untuk memotong teks yang terlalu panjang dalam satu baris
+                      ),
+                      SizedBox(
+                        height: 6,
+                      ),
+                      Text(
+                        'Where you go today?',
+                        style: greyTextStyle.copyWith(
+                            fontSize: 16, fontWeight: light),
+                      )
+                    ],
+                  ),
                 ),
-                SizedBox(
-                  height: 6,
-                ),
-                Text(
-                  'Where you go today?',
-                  style:
-                      greyTextStyle.copyWith(fontSize: 16, fontWeight: light),
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/zatama.png')),
+                  ),
                 )
               ],
             ),
-          ),
-          Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                  image: AssetImage('assets/images/zatama.png')),
-            ),
-          )
-        ],
-      ),
+          );
+        } else {
+          return SizedBox();
+        }
+      },
     );
   }
 
@@ -93,8 +104,8 @@ class HomePage extends StatelessWidget {
 
   Widget newDestinations() {
     return Container(
-      margin:
-          EdgeInsets.only(top: 30, left: defaultMargin, right: defaultMargin, bottom: 100),
+      margin: EdgeInsets.only(
+          top: 30, left: defaultMargin, right: defaultMargin, bottom: 100),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

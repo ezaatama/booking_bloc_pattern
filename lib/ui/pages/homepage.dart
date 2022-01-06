@@ -1,4 +1,6 @@
 import 'package:bwa_airplane/cubit/auth/auth_cubit.dart';
+import 'package:bwa_airplane/cubit/destinations/destination_cubit.dart';
+import 'package:bwa_airplane/models/destinations_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '/ui/widgets/destination_tile.dart';
@@ -7,13 +9,43 @@ import '/ui/widgets/destinations_card.dart';
 import 'package:flutter/material.dart';
 import '../../shared/theme.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    context.read<DestinationCubit>().fetchDestinations();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [header(), popularDestionations(), newDestinations()],
+    return BlocConsumer<DestinationCubit, DestinationState>(
+      listener: (context, state) {
+        if (state is DestinationFailed) {
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(backgroundColor: kRedColor, content: Text(state.error)));
+        }
+      },
+      builder: (context, state) {
+        if (state is DestinationSuccess) {
+          return ListView(
+            children: [
+              header(),
+              popularDestionations(state.destinations),
+              newDestinations(state.destinations )
+            ],
+          );
+        }
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      },
     );
   }
 
@@ -66,43 +98,19 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget popularDestionations() {
+  Widget popularDestionations(List<DestinationModel> destinations) {
     return Container(
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
-          children: [
-            DestinationsCard(
-              imageUrl: 'assets/images/swiss_1.jpg',
-              rating: 4.7,
-              title: 'Jungfrau',
-              city: 'Bern and Valais',
-            ),
-            DestinationsCard(
-              imageUrl: 'assets/images/swiss_2.jpg',
-              rating: 4.8,
-              title: 'Mount Pilatus',
-              city: 'Lucerne',
-            ),
-            DestinationsCard(
-              imageUrl: 'assets/images/swiss_3.jpg',
-              rating: 4.6,
-              title: 'Kleine Scheidegg',
-              city: 'Lauberhorn',
-            ),
-            DestinationsCard(
-              imageUrl: 'assets/images/swiss_4.jpg',
-              rating: 4.7,
-              title: 'Titlis',
-              city: 'Titlis',
-            ),
-          ],
-        ),
+            children: destinations.map((DestinationModel destination) {
+          return DestinationsCard(destination);
+        }).toList()),
       ),
     );
   }
 
-  Widget newDestinations() {
+  Widget newDestinations(List<DestinationModel> destinations) {
     return Container(
       margin: EdgeInsets.only(
           top: 30, left: defaultMargin, right: defaultMargin, bottom: 100),
@@ -113,26 +121,12 @@ class HomePage extends StatelessWidget {
             'New This Year',
             style: blackTextStyle.copyWith(fontSize: 18, fontWeight: semiBold),
           ),
-          DestinationTile(
-              imageUrl: 'assets/images/swiss_5.jpg',
-              title: 'Piz Gloria',
-              city: 'Schiltron',
-              rating: 4.8),
-          DestinationTile(
-              imageUrl: 'assets/images/swiss_6.jpg',
-              title: 'Kleine Scheidegg',
-              city: 'Lauberhorn',
-              rating: 4.8),
-          DestinationTile(
-              imageUrl: 'assets/images/swiss_7.jpg',
-              title: 'Oeschinen Lake',
-              city: 'Bernese Oberland',
-              rating: 4.8),
-          DestinationTile(
-              imageUrl: 'assets/images/swiss_8.jpg',
-              title: 'Staubbach Falls',
-              city: 'Lauterbrunnen',
-              rating: 4.8),
+          Column(
+            children:
+                destinations.map((DestinationModel destination) {
+                  return DestinationTile(destination);
+                }).toList(),
+          )
         ],
       ),
     );

@@ -1,21 +1,20 @@
+import 'package:bwa_airplane/models/destinations_model.dart';
+
 import '/ui/pages/detail_page.dart';
 import 'package:flutter/material.dart';
 import '../../shared/theme.dart';
 
 class DestinationTile extends StatelessWidget {
 
-  final String imageUrl;
-  final double rating;
-  final String title;
-  final String city;
+  final DestinationModel destination;
 
-  const DestinationTile({Key? key, required this.imageUrl, this.rating = 0.0, required this.title, required this.city}) : super(key: key);
+  const DestinationTile(this.destination, {Key? key,}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: (){
-        Navigator.push(context, MaterialPageRoute(builder: (ctx) => DetailPage()));
+        Navigator.push(context, MaterialPageRoute(builder: (ctx) => DetailPage(destination)));
       },
       child: Container(
         margin: EdgeInsets.only(top: 16),
@@ -31,7 +30,7 @@ class DestinationTile extends StatelessWidget {
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(18),
                   image: DecorationImage(
-                      image: AssetImage(imageUrl),
+                      image: NetworkImage(destination.imageUrl),
                       fit: BoxFit.cover)),
             ),
             Expanded(
@@ -39,13 +38,13 @@ class DestinationTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    destination.name,
                     style:
                         blackTextStyle.copyWith(fontSize: 18, fontWeight: medium),
                   ),
                   SizedBox(height: 5),
                   Text(
-                    city,
+                    destination.city,
                     style: greyTextStyle.copyWith(fontWeight: light),
                   )
                 ],
@@ -63,7 +62,7 @@ class DestinationTile extends StatelessWidget {
                           image: AssetImage('assets/icons/star.png'))),
                 ),
                 Text(
-                  rating.toString(),
+                  destination.rating.toString(),
                   style: blackTextStyle.copyWith(fontWeight: medium),
                 )
               ],

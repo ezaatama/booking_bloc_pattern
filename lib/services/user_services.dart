@@ -25,6 +25,7 @@ class UserService{
         email: snapshot['email'],
         name: snapshot['name'],
         hobby: snapshot['hobby'],
+        balance: snapshot['balance']
       );
     } catch (e) {
       throw e;

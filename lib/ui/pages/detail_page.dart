@@ -1,3 +1,6 @@
+import 'package:bwa_airplane/models/destinations_model.dart';
+import 'package:intl/intl.dart';
+
 import '/ui/pages/choose_seat.dart';
 import '/ui/widgets/customButton.dart';
 import '/ui/widgets/interested_item.dart';
@@ -7,10 +10,13 @@ import 'package:flutter/material.dart';
 import '../../shared/theme.dart';
 
 class DetailPage extends StatefulWidget {
-  const DetailPage({Key? key}) : super(key: key);
+  
+  final DestinationModel destination;
+
+  const DetailPage(this.destination, { Key? key }) : super(key: key);
 
   @override
-  _DetailPageState createState() => _DetailPageState();
+  State<DetailPage> createState() => _DetailPageState();
 }
 
 class _DetailPageState extends State<DetailPage> {
@@ -32,8 +38,7 @@ class _DetailPageState extends State<DetailPage> {
       height: 450,
       decoration: BoxDecoration(
           image: DecorationImage(
-              fit: BoxFit.cover,
-              image: AssetImage('assets/images/swiss_1.jpg'))),
+              fit: BoxFit.cover, image: NetworkImage(widget.destination.imageUrl))),
     );
   }
 
@@ -55,8 +60,7 @@ class _DetailPageState extends State<DetailPage> {
   Widget content() {
     return Container(
       width: double.infinity,
-      margin:
-          EdgeInsets.symmetric(horizontal: defaultMargin),
+      margin: EdgeInsets.symmetric(horizontal: defaultMargin),
       child: Column(
         children: [
           Container(
@@ -77,12 +81,12 @@ class _DetailPageState extends State<DetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Jungfrau',
+                        widget.destination.name,
                         style: whiteTextStyle.copyWith(
                             fontSize: 24, fontWeight: semiBold),
                       ),
                       Text(
-                        'Bern and Valais',
+                        widget.destination.city,
                         style: whiteTextStyle.copyWith(
                             fontSize: 16, fontWeight: light),
                       ),
@@ -90,24 +94,23 @@ class _DetailPageState extends State<DetailPage> {
                   ),
                 ),
                 Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 24,
-                            height: 24,
-                            margin: EdgeInsets.only(right: 2),
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image:
-                                        AssetImage('assets/icons/star.png'))),
-                          ),
-                          Text(
-                            '4.5',
-                            style: whiteTextStyle.copyWith(fontWeight: medium),
-                          )
-                        ],
-                      ),
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      width: 24,
+                      height: 24,
+                      margin: EdgeInsets.only(right: 2),
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage('assets/icons/star.png'))),
+                    ),
+                    Text(
+                     widget.destination.rating.toString(),
+                      style: whiteTextStyle.copyWith(fontWeight: medium),
+                    )
+                  ],
+                ),
               ],
             ),
           ),
@@ -196,7 +199,7 @@ class _DetailPageState extends State<DetailPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'IDR 2.500.000',
+                        NumberFormat.currency(locale: 'id', symbol: 'IDR ', decimalDigits: 0 ).format(widget.destination.price),
                         style: blackTextStyle.copyWith(
                             fontSize: 18, fontWeight: medium),
                       ),
@@ -214,7 +217,7 @@ class _DetailPageState extends State<DetailPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ChooseSeatPage()));
+                            builder: (context) => ChooseSeatPage(widget.destination)));
                   },
                   width: 170,
                 )
